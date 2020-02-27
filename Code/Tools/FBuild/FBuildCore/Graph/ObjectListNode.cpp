@@ -136,14 +136,27 @@ ObjectListNode::ObjectListNode()
         }
 
         // .PCHOutputFile
-        if ( nodeGraph.FindNode( m_PCHOutputFile ) )
+		precompiledHeader = nodeGraph.FindNode( m_PCHOutputFile );
+        if ( precompiledHeader != nullptr )
         {
-            // TODO:C - Allow existing definition if settings are identical for better multi-ObjectList use of PCH
-            Error::Error_1301_AlreadyDefinedPCH( iter, function, m_PCHOutputFile.Get() );
-            return false;
+			ObjectNode* node = precompiledHeader->GetType() == OBJECT_NODE ? precompiledHeader->CastTo<ObjectNode>() : nullptr;
+			if (node == nullptr ||
+				node->m_CompilerOptions != m_PCHOptions ||
+				node->m_Flags != pchFlags ||
+				node->m_Compiler != m_Compiler ||
+				node->m_CompilerInputFile != m_PCHInputFile ||
+				node->m_PCHObjectFileName != pchObjectName
+				) {
+				Error::Error_1301_AlreadyDefinedPCH( iter, function, m_PCHOutputFile.Get() );
+				return false;
+			}
         }
 
-        precompiledHeader = CreateObjectNode( nodeGraph, iter, function, pchFlags, 0, m_PCHOptions, AString::GetEmpty(), AString::GetEmpty(), AString::GetEmpty(), m_PCHOutputFile, m_PCHInputFile, pchObjectName );
+		if (precompiledHeader == nullptr)
+		{
+			precompiledHeader = CreateObjectNode( nodeGraph, iter, function, pchFlags, 0, m_PCHOptions, AString::GetEmpty(), AString::GetEmpty(), AString::GetEmpty(), m_PCHOutputFile, m_PCHInputFile, pchObjectName );
+		}
+
         if ( precompiledHeader == nullptr )
         {
             return false; // CreateObjectNode will have emitted an error

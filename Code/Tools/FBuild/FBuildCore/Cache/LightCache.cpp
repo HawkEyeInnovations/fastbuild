@@ -596,8 +596,9 @@ void LightCache::ProcessInclude( const AString & include, IncludeType type )
         {
 
             // Find macro - expand each possible value
-            for ( const IncludeDefine * def : m_IncludeDefines )
+            for (size_t i = 0; i < m_IncludeDefines.GetSize(); ++i)
             {
+                const IncludeDefine * def = m_IncludeDefines[i];
                 if ( def->m_Macro == include )
                 {
                     ProcessInclude( def->m_Include, def->m_Type );

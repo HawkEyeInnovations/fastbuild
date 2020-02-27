@@ -1062,6 +1062,9 @@ void NodeGraph::AddNode( Node * node )
     // set index on node
     node->SetIndex( m_NextNodeIndex );
     m_NextNodeIndex = (uint32_t)m_AllNodes.GetSize();
+
+    if (node->m_Name == "libpose-ObjectGroup_CUDA-src-1")
+        node = node;
 }
 
 // Build

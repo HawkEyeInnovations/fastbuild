@@ -822,13 +822,15 @@ void Node::ReplaceDummyName( const AString & newName )
             }
             lineEnd++;
         }
-        if ( lineStart != lineEnd ) // ignore empty
-        {
-            // make a copy of the line to output
-            AStackString< 1024 > copy( lineStart, lineEnd );
 
-            // skip this line?
-            bool skip = false;
+        // make a copy of the line to output
+        AStackString< 1024 > copy(lineStart, lineEnd);
+
+        // skip this line?
+        bool skip = false;
+
+        if ( lineStart != lineEnd )
+        {
             if ( exclusions )
             {
                 const AString * iter = exclusions->Begin();
@@ -843,24 +845,29 @@ void Node::ReplaceDummyName( const AString & newName )
                     iter++;
                 }
             }
-            if ( !skip )
+        }
+        else
+        {
+            copy = "\n";
+        }
+
+        if (!skip)
+        {
+            copy += '\n';
+
+            // Clang format fixup for Visual Studio
+            // (FBuild is null in remote context - fixup occurs on master)
+            if (FBuild::IsValid() && FBuild::Get().GetOptions().m_FixupErrorPaths)
             {
-                copy += '\n';
-
-                // Clang format fixup for Visual Studio
-                // (FBuild is null in remote context - fixup occurs on master)
-                if ( FBuild::IsValid() && FBuild::Get().GetOptions().m_FixupErrorPaths )
-                {
-                    FixupPathForVSIntegration( copy );
-                }
-
-                // if the buffer needs to grow, grow in 1MiB chunks
-                if ( buffer.GetLength() + copy.GetLength() > buffer.GetReserved() )
-                {
-                    buffer.SetReserved( buffer.GetReserved() + MEGABYTE );
-                }
-                buffer += copy;
+                FixupPathForVSIntegration(copy);
             }
+
+            // if the buffer needs to grow, grow in 1MiB chunks
+            if (buffer.GetLength() + copy.GetLength() > buffer.GetReserved())
+            {
+                buffer.SetReserved(buffer.GetReserved() + MEGABYTE);
+            }
+            buffer += copy;
         }
         data = ( lineEnd + 1 );
     }

@@ -33,14 +33,14 @@ private:
 // Register Tests
 //------------------------------------------------------------------------------
 REGISTER_TESTS_BEGIN( TestBuildAndLinkLibrary )
-    REGISTER_TEST( TestParseBFF )
-    REGISTER_TEST( TestBuildLib )
-    REGISTER_TEST( TestBuildLib_NoRebuild )
-    REGISTER_TEST( TestBuildLib_NoRebuild_BFFChange )
-    REGISTER_TEST( TestLibMerge )
-    REGISTER_TEST( TestLibMerge_NoRebuild )
+    //REGISTER_TEST( TestParseBFF )
+    //REGISTER_TEST( TestBuildLib )
+    //REGISTER_TEST( TestBuildLib_NoRebuild )
+    //REGISTER_TEST( TestBuildLib_NoRebuild_BFFChange )
+    //REGISTER_TEST( TestLibMerge )
+    //REGISTER_TEST( TestLibMerge_NoRebuild )
     REGISTER_TEST( TestLibMerge_NoRebuild_BFFChange )
-    REGISTER_TEST( DeleteFile )
+    //REGISTER_TEST( DeleteFile )
 REGISTER_TESTS_END
 
 // TestStackFramesEmpty
@@ -227,6 +227,7 @@ void TestBuildAndLinkLibrary::TestLibMerge_NoRebuild_BFFChange() const
 
     // Build
     TEST_ASSERT( fBuild.Build( lib ) );
+    TEST_ASSERT(fBuild.SaveDependencyGraph(GetMergeLibDBFileName()));
 
     // Check stats
     //               Seen,  Built,  Type

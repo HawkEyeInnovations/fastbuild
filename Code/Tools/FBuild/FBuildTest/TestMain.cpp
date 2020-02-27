@@ -10,9 +10,10 @@
 int main( int, char *[] )
 {
     // tests to run
-    REGISTER_TESTGROUP( TestAlias )
-    REGISTER_TESTGROUP( TestBFFParsing )
+    //REGISTER_TESTGROUP( TestAlias )
+    //REGISTER_TESTGROUP( TestBFFParsing )
     REGISTER_TESTGROUP( TestBuildAndLinkLibrary )
+        /*
     REGISTER_TESTGROUP( TestBuildFBuild )
     REGISTER_TESTGROUP( TestCache )
     REGISTER_TESTGROUP( TestCachePlugin )
@@ -50,7 +51,7 @@ int main( int, char *[] )
         REGISTER_TESTGROUP( TestResources )
         REGISTER_TESTGROUP( TestZW )
     #endif
-
+    */
     UnitTestManager utm;
 
     bool allPassed = utm.RunTests();

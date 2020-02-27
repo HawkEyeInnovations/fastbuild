@@ -32,6 +32,7 @@ ObjectList( 'objListC' )
 }
 Library( 'libMerged' )
 {
+    .PreBuildDependencies = { 'libA', 'objListC' }
     .LibrarianAdditionalInputs  = { 'libA', // library by alias
                                     '$Out$\Test\BuildAndLinkLibrary\b.lib', // library by name
                                      'objListC' } // object list
