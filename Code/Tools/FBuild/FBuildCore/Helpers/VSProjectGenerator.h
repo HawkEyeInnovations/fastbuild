@@ -20,6 +20,7 @@ class VSProjectFilePair
 public:
     AString m_ProjectRelativePath;  // Paths to files are project-relatice
     AString m_AbsolutePath;         // Folder structure is relative to BasePaths which can be outside of the project folder
+    AString m_Folder;               // Virtual folder
 };
 
 // VSProjectGenerator
@@ -33,6 +34,7 @@ public:
     void SetBasePaths( const Array< AString > & paths );
 
     void AddFile( const AString & file );
+    void AddFile( const AString& file, const AString& folder );
     void AddFiles( const Array< AString > & files );
 
     void SetRootNamespace( const AString & s )          { m_RootNamespace = s; }

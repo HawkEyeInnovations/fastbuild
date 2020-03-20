@@ -60,13 +60,21 @@ void VSProjectGenerator::SetBasePaths( const Array< AString > & paths )
 
 // AddFile
 //------------------------------------------------------------------------------
-void VSProjectGenerator::AddFile( const AString & file )
+void VSProjectGenerator::AddFile(const AString& file, const AString& folder)
 {
     // ensure slash consistency which we rely on later
-    AStackString<> fileCopy( file );
-    fileCopy.Replace( FORWARD_SLASH, BACK_SLASH );
+    AStackString<> fileCopy(file);
+    fileCopy.Replace(FORWARD_SLASH, BACK_SLASH);
     m_Files.EmplaceBack();
     m_Files.Top().m_AbsolutePath = fileCopy;
+    m_Files.Top().m_Folder = folder;
+}
+
+// AddFile
+//------------------------------------------------------------------------------
+void VSProjectGenerator::AddFile( const AString & file )
+{
+    this->AddFile(file, AString(""));
 }
 
 // AddFiles
@@ -439,9 +447,13 @@ const AString & VSProjectGenerator::GenerateVCXProjFilters( const AString & proj
             WriteF( "    <CustomBuild Include=\"%s\">\n", filePathPair.m_ProjectRelativePath.Get() );
 
             // get folder part, relative to base dir(s)
-            const AString & fileName = filePathPair.m_AbsolutePath;
-            AStackString<> folder;
-            GetFolderPath( fileName, folder );
+            AStackString<> folder (filePathPair.m_Folder);
+
+            if (folder.IsEmpty())
+            {
+                const AString& fileName = filePathPair.m_AbsolutePath;
+                GetFolderPath(fileName, folder);
+            }
 
             if ( !folder.IsEmpty() )
             {

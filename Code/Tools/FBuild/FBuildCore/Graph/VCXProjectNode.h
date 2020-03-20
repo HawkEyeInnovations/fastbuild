@@ -99,6 +99,14 @@ public:
     AString             m_Project;      // e.g. "$(VCTargetsPath)\\Platforms\\$(Platform)\\SCE.Makefile.$(Platform).targets"
 };
 
+class VSProjectFileWithFolder : public Struct
+{
+    REFLECT_STRUCT_DECLARE(VSProjectFileWithFolder)
+public:
+    Array< AString >    m_Files;
+    AString             m_Folder;
+};
+
 // VCXProjectNode
 //------------------------------------------------------------------------------
 class VCXProjectNode : public VSProjectBaseNode
@@ -124,6 +132,7 @@ private:
     Array< AString >    m_ProjectInputPaths;
     Array< AString >    m_ProjectInputPathsExclude;
     Array< AString >    m_ProjectFiles;
+    Array< VSProjectFileWithFolder > m_ProjectFilesWithFolders;
     Array< AString >    m_ProjectFilesToExclude;
     Array< AString >    m_ProjectPatternToExclude;
     Array< AString >    m_ProjectBasePaths;

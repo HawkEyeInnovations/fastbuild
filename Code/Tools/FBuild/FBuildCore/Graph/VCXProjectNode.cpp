@@ -80,10 +80,16 @@ REFLECT_STRUCT_BEGIN_BASE( VSProjectImport )
     REFLECT(        m_Project,                      "Project",                      MetaNone() )
 REFLECT_END( VSProjectImport )
 
+REFLECT_STRUCT_BEGIN_BASE( VSProjectFileWithFolder )
+    REFLECT_ARRAY(        m_Files,                    "Files",                           MetaFile() )
+    REFLECT(        m_Folder,                      "Folder",                      MetaNone() )
+REFLECT_END( VSProjectFileWithFolder )
+
 REFLECT_NODE_BEGIN( VCXProjectNode, VSProjectBaseNode, MetaName( "ProjectOutput" ) + MetaFile() )
     REFLECT_ARRAY(  m_ProjectInputPaths,            "ProjectInputPaths",            MetaOptional() + MetaPath() )
     REFLECT_ARRAY(  m_ProjectInputPathsExclude,     "ProjectInputPathsExclude",     MetaOptional() + MetaPath() )
     REFLECT_ARRAY(  m_ProjectFiles,                 "ProjectFiles",                 MetaOptional() + MetaFile() )
+    REFLECT_ARRAY_OF_STRUCT(  m_ProjectFilesWithFolders,      "ProjectFilesWithFolders",      VSProjectFileWithFolder, MetaOptional() )
     REFLECT_ARRAY(  m_ProjectFilesToExclude,        "ProjectFilesToExclude",        MetaOptional() + MetaFile() )
     REFLECT_ARRAY(  m_ProjectPatternToExclude,      "ProjectPatternToExclude",      MetaOptional() + MetaFile() )
     REFLECT_ARRAY(  m_ProjectBasePaths,             "ProjectBasePath",              MetaOptional() + MetaPath() ) // NOTE: Exposed as "ProjectBasePath" for backwards compat
@@ -274,6 +280,13 @@ VCXProjectNode::~VCXProjectNode() = default;
     for ( const AString & fileName : m_ProjectFiles )
     {
         pg.AddFile( fileName );
+    }
+
+    for ( const VSProjectFileWithFolder & files : m_ProjectFilesWithFolders)
+    {
+        for (const AString& file : files.m_Files) {
+            pg.AddFile(file, files.m_Folder);
+        }
     }
 
     // .vcxproj
