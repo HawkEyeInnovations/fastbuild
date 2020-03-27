@@ -419,6 +419,7 @@ void ProjectGeneratorBase::AddConfig( const ProjectGeneratorBaseConfig & config 
     prefixes[ 0 ].EmplaceBack( "/I" );
     prefixes[ 0 ].EmplaceBack( "-I" );
     prefixes[ 1 ].EmplaceBack( "-isystem-after" ); // NOTE: before -isystem so it's checked first
+    prefixes[ 1 ].EmplaceBack( "-isystem=" );
     prefixes[ 1 ].EmplaceBack( "-isystem" );
     prefixes[ 2 ].EmplaceBack( "/imsvc" );
     prefixes[ 2 ].EmplaceBack( "-imsvc" );
