@@ -120,6 +120,12 @@ const AString & VSProjectGenerator::GenerateVCXProj( const AString & projectFile
     Write( "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" );
     Write( "<Project DefaultTargets=\"Build\" ToolsVersion=\"15.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">\n" );
 
+    Write("<ItemDefinitionGroup>\n");
+    Write("<Link>\n");
+    Write("  <SubSystem>Console</SubSystem>\n");
+    Write("</Link>\n");
+    Write("</ItemDefinitionGroup>\n");
+
     // Project Configurations
     {
         Write( "  <ItemGroup Label=\"ProjectConfigurations\">\n" );
