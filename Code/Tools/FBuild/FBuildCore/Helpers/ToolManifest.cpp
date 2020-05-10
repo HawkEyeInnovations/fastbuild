@@ -115,7 +115,7 @@ bool ToolManifestFile::DoBuild()
 
     // Should not have any file data in memory
     ASSERT( m_CompressedContent == nullptr );
-    ASSERT( m_CompressedContentSize == 0 );
+    //ASSERT( m_CompressedContentSize == 0 );
 
     // Do we already have a hash?
     if ( m_Hash != 0 )
