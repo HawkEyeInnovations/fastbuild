@@ -314,8 +314,8 @@ bool LightCache::Hash( ObjectNode * node,
     // Was there a problem during parsing? (Some construct we don't know how to handle for example)
     if ( m_Errors.IsEmpty() == false )
     {
-        outSourceHash = 0;
-        return false;
+        // outSourceHash = 0;
+        // return false;
     }
 
     // Create final hash and return includes
