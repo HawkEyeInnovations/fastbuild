@@ -285,6 +285,21 @@ bool LightCache::Hash( ObjectNode * node,
         includePath += NATIVE_SLASH;
     }
 
+    // Look for force includes
+    // TODO: This probably only works for full path force includes.
+    Array<AString> prefixes;
+    prefixes.EmplaceBack("/FI"); // msvc
+    prefixes.EmplaceBack("-include"); // gcc/clang
+    Array<AString> forceIncludes;
+    const bool keepFullOption = false;
+    ProjectGeneratorBase::ExtractIntellisenseOptions( compilerArgs, prefixes, forceIncludes, true, keepFullOption );
+
+    for(auto &s : forceIncludes){
+        //printf("Force includes %s\n", s.Get());
+        ProcessInclude(s, IncludeType::QUOTE );
+    }
+
+
     const AString & rootFileName = node->GetSourceFile()->GetName();
     ProcessInclude( rootFileName, IncludeType::QUOTE );
 
